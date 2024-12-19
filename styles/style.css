@@ -10,6 +10,12 @@
 
 */
 
+@supports (font-variation-settings: normal) {
+  .page {
+    font-variation-settings: "wght" var(--weight-text, 400);
+  }
+}
+
 .page {
   color: var(--main-font-color);
   font-family: var(--main-font), sans-serif;
@@ -19,14 +25,6 @@
   background-attachment: fixed;
   min-inline-size: 320px;
   min-block-size: 100dvb;
-  font-variation-settings: "wght" var(--weight-text, 400);
-}
-
-@supports (font-variation-settings: normal) {
-  .page {
-    font-family: var(--main-font), sans-serif;
-    font-variation-settings: "wght" var(--weight-text, 400);
-  }
 }
 
 .button {
@@ -39,6 +37,7 @@
   font-size: 14px;
   background-color: transparent;
   cursor: pointer;
+  appearance: auto;
 }
 
 .button:after {
@@ -61,6 +60,7 @@
 
 .button:focus-visible {
   box-shadow: 2px 2px 0px 0px var(--text-color, #000);
+  transition: box-shadow 0.3s ease;
 }
 
 .button__icon {
@@ -76,20 +76,15 @@
 }
 
 .header {
-  max-width: 100%;
-  height: 527px;
-  padding-top: 102px;
-}
-
-.header__wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 20px;
-  height: 323px;
-  margin: 0 auto;
-  border: 2px solid #000;
+  margin: 100px auto;
+  border: 2px solid var(--main-font-color);
+  padding-block: 100px;
   font-family: var(--accent-font);
+  line-height: 1;
   text-align: center;
   text-transform: uppercase;
   background-color: var(--background-color);
@@ -104,10 +99,7 @@
 }
 
 .main {
-  background-color: var(--background-color);
-}
-
-.main__wrapper {
+  /* background-color: var(--background-color); */
   display: flex;
   flex-direction: column;
   gap: 50px;
@@ -116,6 +108,7 @@
 
 .main__article {
   border: 2px solid #000;
+  background-color: var(--background-color);
 }
 
 .main__article-title {
@@ -126,10 +119,8 @@
 
 .main__article-images {
   position: relative;
-  border-top: 2px solid #000;
-  border-bottom: 2px solid #000;
-  overflow: clip;
-  min-block-size: 371px;
+  margin: 0;
+  overflow: hidden;
 }
 
 .main__article-label {
@@ -140,16 +131,27 @@
   opacity: 0.5;
   font-family: var(--accent-font);
   font-size: 14px;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #ffffff;
-
+  text-shadow: -1px 0 var(--text-shadow-color), 0 1px var(--text-shadow-color),
+    1px 0 var(--text-shadow-color), 0 -1px var(--text-shadow-color);
   mix-blend-mode: hard-light;
+}
+
+@supports (
+  (text-stroke: 1px var(--text-shadow-color)) or
+    (-webkit-text-stroke: 1px var(--text-shadow-color))
+) {
+  .main__article-label {
+    text-shadow: none;
+    -webkit-text-stroke: 1px var(--text-shadow-color);
+    text-stroke: 1px var(--text-shadow-color);
+  }
 }
 
 .main__article-img {
   display: block;
-  width: 100%;
-  height: 100%;
+  object-fit: cover;
+  inline-size: 100%;
+  aspect-ratio: 1;
 }
 
 .filter-grayscale {
@@ -185,6 +187,9 @@
   flex-direction: column;
   gap: 26px;
   padding: 25px;
+  padding: 28px 25px 24px 25px;
+  line-height: 21px;
+  line-height: 21px;
 }
 
 .main__article-buttons {
@@ -237,17 +242,14 @@
   background-color: transparent;
 }
 
-.footer {
-  padding: 56px 0 100px;
-  background-color: var(--background-color);
-}
-
 .button__footer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 8px;
+  margin: 0 auto 100px;
+  background-color: var(--background-color);
 }
 
 .icon {
@@ -269,7 +271,7 @@
   font-family: var(--accent-font);
   font-weight: 400;
   font-size: 14px;
-  line-height: 150%;
+  line-height: 21px;
   text-transform: uppercase;
 }
 
@@ -285,24 +287,26 @@ dialog::backdrop {
 
 dialog {
   border-width: 1px;
-  padding: 30px;
+  padding: 30px 40px;
   max-inline-size: 353px;
   min-inline-size: 193px;
 }
 
-@media (width >= 1440px) {
-  .header__wrapper {
-    height: 366px;
+@media (width >= 676px) {
+  .page {
+    padding-inline: 22vw;
   }
+}
 
+@media (width >= 1440px) {
   .header {
-    height: 568px;
+    padding-block: 128px;
   }
 
   .header,
   .main {
     max-width: 700px;
-    margin: 0 auto;
+    margin-inline: auto;
   }
 
   .main__article {
@@ -322,10 +326,6 @@ dialog {
     right: 25px;
   }
 
-  .footer {
-    padding: 50px 0 100px;
-  }
-
   .button__footer {
     flex-direction: row;
     width: 338px;
@@ -335,5 +335,9 @@ dialog {
   .icon {
     width: 22px;
     aspect-ratio: 1;
+  }
+
+  dialog {
+    padding: 30px 40px;
   }
 }
